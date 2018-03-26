@@ -1,0 +1,97 @@
+<html>
+<head>
+<link rel="stylesheet" href="inc/css.css" type="text/css" />
+</head>
+<body>
+<form name="form1" method="post" action="">
+  <table width="1052" border=0 align=center cellpadding=2 cellspacing=1 bordercolor="#799AE1" class=tableBorder>
+    <tbody>
+      <tr>
+        <th align=center colspan=16 style="height: 23px">商品管理</th>
+      </tr>
+      <tr bgcolor="#DEE5FA">
+        <td colspan="16" align="center" class=txlrow>&nbsp;</td>
+      </tr>
+      <tr align="center" bgcolor="#799AE1">
+        <td width="6%" align="center" class="txlHeaderBackgroundAlternate">编号</td>
+        <td width="7%" align="center" class=txlHeaderBackgroundAlternate>父类编号</td>
+        <td width="9%" align="center" class=txlHeaderBackgroundAlternate>名字</td>
+        <td width="8%" align="center" class=txlHeaderBackgroundAlternate>状态</td>
+        <td align="center" class=txlHeaderBackgroundAlternate>��ʼʱ��</td>
+        <td colspan="2" align="center" class=txlHeaderBackgroundAlternate>创建时间</td>
+        <td width="9%" align="center" class=txlHeaderBackgroundAlternate>更新时间</td>
+        <td width="7%" align="center" class=txlHeaderBackgroundAlternate>sort_order</td>
+        <td width="6%" align="center" class=txlHeaderBackgroundAlternate>�������</td>
+        <td width="7%" align="center" class=txlHeaderBackgroundAlternate>��ȥ�������</td>
+        <td width="6%" align="center" class=txlHeaderBackgroundAlternate>Ŀǰʤ����</td>
+        <td width="3%" align="center" class=txlHeaderBackgroundAlternate>״̬</td>
+        <td width="4%" align="center" class=txlHeaderBackgroundAlternate>��������</td>
+        <td width="6%" align="center" class=txlHeaderBackgroundAlternate>����</td>
+        <td width="4%" align="center" class=txlHeaderBackgroundAlternate>ѡ��</td>
+      </tr>
+ 
+      <tr bgcolor="#DEE5FA">
+        <td align="center" class="txlrow">&nbsp;</td>
+        <td align=center class=txlrow>&nbsp;</td>
+        <td align=center class=txlrow>&nbsp;</td>
+        <td align=center bgcolor="#DEE5FA" class=txlrow>&nbsp;</td>
+        <td width="8%" align=center class=txlrow>&nbsp;</td>
+        <td colspan="2" align=center class=txlrow></td>
+        <td align=center class=txlrow>&nbsp;</td>
+        <td align=center class=txlrow>&nbsp;</td>
+        <td align=center class=txlrow>&nbsp;</td>
+        <td align=center class=txlrow>&nbsp;</td>
+        <td align=center class=txlrow>&nbsp;</td>
+        <td align=center class=txlrow></td>
+        <td align=center class=txlrow></td>
+        <td align=center class=txlrow></td>
+        <td align=center class=txlrow><input type="checkbox" name="ch[1]" value="0"></td>
+      </tr>
+    
+      <tr bgcolor="#DEE5FA">
+        <td colspan="16" align=center bgcolor="#DEE5FA" class=txlrow>�趨��
+          <label>
+          <input type="radio" name="do" value="2" />
+����Ϊ�ѿ���
+          
+          <input type="radio" name="do" value="3" />
+����δ����
+<input type="radio" name="do" value="1" />
+ɾ�� </label>
+          <label></label>
+          <span class="tablebody2">
+          <input type="button" value="ȫѡ" name="Submit2" onClick="selectAll()" />
+          </span>
+        <input type="submit" name="ok" value="ȷ��" class="but"></td>
+      </tr>
+      <tr bgcolor="#DEE5FA">
+        <td colspan=16 align=center class=txlrow></td>
+      </tr>
+      <?
+}else{ echo "<tr><td height=20 colspan=8 align=middle valign=top bgcolor=#ffffff>���޼�¼</td></tr>";}
+
+?></tbody></table>
+</FORM>
+<script  language="javascript">  
+       function  selectAll()  
+       {  
+       var  arrObj  =  document.all;  
+       for(var  i  =  0;  i  <  arrObj.length;i++)  
+       {  
+ 
+                               if(typeof  arrObj[i].type  !=  "undefined"  &&  arrObj[i].type=='checkbox')  arrObj[i].checked  =true;  
+       }  
+       }  
+ 
+       function  unSelectAll()  
+       {  
+           var  arrObj  =  document.all;  
+       for(var  i  =  0;  i  <  arrObj.length;i++)  
+       {  
+                               if(typeof  arrObj[i].type  !=  "undefined"  &&  arrObj[i].type=='checkbox')  arrObj[i].checked  =false;  
+       }  
+       }  
+</script> 
+
+</BODY>
+  </HTML>

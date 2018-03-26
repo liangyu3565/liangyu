@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+
+<mapper namespace="com.liangyu.entity.UserOrderItem">
+
+<insert id="addBatch" parameterType="list" keyColumn="id" keyProperty="id" useGeneratedKeys="true"  statementType="PREPARED">
+
+insert into userorderitem(order_no,user_id,product_name,product_image,current_unit_price,quantity,total_price,create_time,update_time) values
+ <foreach collection="list" item="orderItem"  separator=",">
+ (#{orderItem.order_no},#{orderItem.user_id},#{orderItem.product_name},#{orderItem.product_image},#{orderItem.current_unit_price},#{orderItem.quantity},#{orderItem.total_price},now(),now())
+ 
+ </foreach>                
+
+</insert>
+
+<resultMap type="com.liangyu.entity.UserOrderItem" id="item_product_resultmap" autoMapping="true">
+<id column="uid" property="item_id"></id>
+
+<association column="id" property="product" javaType="com.liangyu.entity.Product" autoMapping="true">
+<id  column="id" property="id" />
+<result column="category_id" property="category_id"/>
+</association>
+</resultMap>
+<select id="findOrderItemByOrderNo" parameterType="long" resultMap="item_product_resultmap">
+select p.id id,p.category_id category_id,p.name name,p.subtitle subtitle,p.main_image main_image,p.sub_image sub_image,p.detail detail,p.price,u.item_id uid
+from userorderitem u
+left join product p
+on u.product_name=p.name
+where u.order_no=#{order_no}
+</select>
+
+
+  
+
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+
+<mapper namespace="com.liangyu.entity.User">
+
+
+  <insert id="addBatchUser" parameterType="list" keyColumn="id" keyProperty="id" statementType="PREPARED" useGeneratedKeys="true">
+  insert into user(username,password,email,phone,question,answer,role,create_time,update_time)
+  values
+  <foreach collection="list" item="user" separator=",">
+  (#{user.username},#{user.password},#{user.email},#{user.phone},#{user.question},#{user.answer},#{user.role},now(),now())
+  </foreach>
+  
+  
+  
+  </insert>
+
+  <select id="checkUserName"  parameterType="java.lang.String"  
+  resultType="java.lang.Integer">
+  	  select count(username) from user where username=#{username}
+  </select>
+  <select id="findByUserNameAndPsssword" parameterType="java.util.Map" resultType="com.liangyu.entity.User">
+  select id,username,password,email,phone,question,answer,role from user where username=#{username} and password=#{password}
+  
+  
+  
+  
+  </select>
+  <update id="updateTokenByUserId" parameterType="java.util.Map" >
+  update user set token=#{token} where id=#{userid}
+  
+  </update>
+  
+  
+<select id="findUserByToken" parameterType="java.lang.String" resultType="com.liangyu.entity.User"> 
+
+select id,username,password,email,phone,question,answer,role  from user where token=#{token}
+
+</select>
+<select id="findAllUser" resultType="com.liangyu.entity.User">
+select id,username,password,email,phone,question,answer,role from user 
+
+</select>
+<select id="findTotalCount" resultType="java.lang.Integer">
+select count(id) from user
+
+</select>
+<select id="findUserbyPage" parameterType="java.util.Map" resultType="com.liangyu.entity.User">
+
+select id,username,password,email,phone,question,answer,role from user limit #{offset},#{pageSize}
+
+</select>
+
+<delete id="delectTokenByUserId" parameterType="java.lang.Integer">
+
+update user set token=null where id=#{userid}
+
+</delete>
+
+
+<select id="findUserByForeach" parameterType="java.util.List" resultType="com.liangyu.entity.User">
+
+select username,password from user where id in
+<foreach collection="list" item="id" separator="," open="(" close=")">
+#{id} 
+
+
+
+
+</foreach>
+
+
+
+</select>
+
+</mapper>

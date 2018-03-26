@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+
+<mapper namespace="com.liangyu.entity.Cart">
+
+
+  <select id="findCartByUserIdAndProductId" parameterType="java.util.Map" resultType="com.liangyu.entity.Cart">
+
+select id,user_id,product_id,quantity,checked,create_time,update_time from cart where user_id=#{user_id} and product_id=#{product_id}
+
+</select>
+ <update id="updateCartByUserIdAndProductId" parameterType="java.util.Map" >
+  update cart set quantity=#{quantity},update_time=now() where user_id=#{user_id} and product_id=#{product_id}
+  
+  </update>
+   <insert id="addProductIntoCartByUserIdAndProductId" parameterType="java.util.Map" keyColumn="id" keyProperty="id" statementType="PREPARED" useGeneratedKeys="true">
+     insert into cart(user_id,product_id,quantity,create_time,update_time) value(#{user_id},#{product_id},#{quantity},now(),now())
+
+    </insert>
+
+  <delete id="delectCartByProductId" parameterType="java.util.Map" >
+  delete from cart where user_id=#{user_id} and product_id=#{product_id}
+  </delete>
+
+  <select id="findTotalCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  select count(id) from cart where user_id=#{userid}
+  </select>
+  
+  
+  <resultMap type="com.liangyu.entity.Cart" id="cart_user_resultmap" autoMapping="true">
+  <id column="id" property="id"/>
+  <result column="quantity" property="quantity"/>
+  
+  <association property="user" column="id" javaType="com.liangyu.entity.User" autoMapping="true">
+  <id column="id" property="id"/>
+  <result column="username" property="username" />
+  </association>
+  <association property="product" column="id" javaType="com.liangyu.entity.Product" autoMapping="true">
+  <id column="pid" property="id"/>
+  <result column="name" property="name"/>
+  </association>
+  
+  
+  </resultMap>
+  
+  
+  <select id="findCartByPage" parameterType="java.util.Map" resultMap="cart_user_resultmap">
+  
+  <!--  select id,user_id,product_id,quantity,checked,create_time,update_time from Cart where user_id=#{user_id} limit #{offset},#{pagesize}-->
+  select c.id id,c.user_id user_id,u.username username,p.name name,p.price price,p.main_image main_image,p.id pid,c.quantity quantity,c.checked checked,c.create_time create_time,c.update_time update_time from Cart c
+  left join user u
+  on c.user_id=u.id
+  left join product p
+   on c.product_id=p.id
+   where user_id=#{user_id}
+    limit #{offset},#{pagesize}
+  </select>
+   <update id="checkOrUncheckedProduct" parameterType="java.util.Map">
+   
+   update cart <set> 
+   checked=#{checked} 
+   </set>
+   <where>user_id=#{user_id}
+   
+   
+   <if test="product_id!=-1">
+   and product_id=#{product_id}
+   
+   </if>
+   </where>
+   
+   </update>
+
+ <select id="findCartQuantity" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
+ 
+ select ifnull(sum(quantity),0) from cart
+ <where>
+ user_id=#{user_id}
+ </where>
+ </select>
+ 
+ 
+ 
+  <resultMap type="com.liangyu.entity.Cart" id="cart_product_resultmap" autoMapping="true">
+  <id column="id" property="id"/>
+  <result column="quantity" property="quantity"/>
+  <association property="product" column="id" javaType="com.liangyu.entity.Product" autoMapping="true">
+  <id column="pid" property="id"/>
+  <result column="name" property="name"/>
+  </association>
+  
+  
+  </resultMap>
+ 
+ 
+ <select id="findCartListByUserId" parameterType="java.lang.Integer" resultMap="cart_product_resultmap">
+ select c.id,c.user_id,c.product_id,c.quantity,c.checked,c.create_time,c.update_time,p.id pid
+ from cart c 
+ left join product p
+ on c.product_id=p.id
+ where user_id=#{user_id} and checked=1
+ 
+ </select>
+ 
+ <delete id="deleteCheckedProductByUserid" parameterType="java.lang.Integer">
+ 
+ delete from cart where user_id=#{userid} and checked=1
+ </delete>
+ 
+ 
+
+
+</mapper>

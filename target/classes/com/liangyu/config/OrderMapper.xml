@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+
+<mapper namespace="com.liangyu.entity.UserOrder">
+
+<insert id="addOrder" parameterType="com.liangyu.entity.UserOrder" keyColumn="id" keyProperty="id" useGeneratedKeys="true">
+
+insert into userorder(order_no,user_id,shipping_id,payment,payment_type,postage,status,create_time,update_time)
+values(#{order_no},#{user_id},#{shipping_id},#{payment},#{payment_type},#{postage},#{status},now(),now())
+
+</insert>
+  <select id="findTotalPage" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  
+  select count(order_no) from userorder where user_id=#{userid}
+  </select>
+ 
+  <resultMap type="com.liangyu.entity.UserOrder" id="order_user_resultmap" autoMapping="true">
+  <id  column="id" property="id"/>
+  <association column="id" property="user" javaType="com.liangyu.entity.User" autoMapping="true">
+  <id  column="uid" property="id" />
+  <result column="username" property="username" />  
+  </association>
+  </resultMap>
+  <select id="findUserOrder" parameterType="map" resultMap="order_user_resultmap">
+  
+  select uo.id id,uo.order_no order_no,uo.user_id user_id,uo.shipping_id shipping_id,uo.payment payment,uo.payment_type payment_type,uo.postage postage,uo.status status,uo.create_time create_time,uo.update_time update_time,u.username username,u.id uid 
+  from userorder uo
+  left join user u
+  on uo.user_id=u.id
+  where user_id=#{userid} limit #{offset},#{pageSize}
+  </select>
+  
+  <select id="findOrderItemByOrderNo" parameterType="long" resultMap="order_item_resultmap" >
+  select o.id id,o.order_no order_no,o.create_time create_time,o.update_time update_time,o.payment payment,o.payment_type payment_type,
+  item.product_name product_name,item.product_image product_image,item.quantity quantity,item.total_price total_price,item.item_id item_id
+  from userorder o
+  left join userorderitem item
+  on o.order_no=item.order_no
+  where o.order_no=#{orderno}
+  </select>
+  <resultMap type="com.liangyu.entity.UserOrder" id="order_item_resultmap" autoMapping="true">
+  <id column="id" property="id"></id>
+  <collection property="orderItems" javaType="list" ofType="com.liangyu.entity.UserOrderItem" column="order_no" autoMapping="true">
+  <id column="item_id" property="item_id"></id>
+  </collection>
+  </resultMap>
+  <update id="updateOrderStatusByOrderNo" parameterType="java.util.Map" >
+  
+  update userorder set status=#{status} 
+  <where>
+  order_no=#{orderno}
+  </where>
+  
+  </update>
+  
+  
+
+</mapper>
